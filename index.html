@@ -31,11 +31,52 @@
       <div id="progress-bar" class="bg-amber-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
     </div>
 
+    <!-- Tarjeta del Tutor y Autor -->
+    <section
+      class="bg-gradient-to-r from-slate-900 to-blue-950 text-white rounded-lg p-4 shadow-sm border border-slate-800 flex items-start space-x-3">
+      <div
+        class="w-12 h-12 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-lg flex-shrink-0 shadow">
+        YT
+      </div>
+      <div class="space-y-1 text-xs">
+        <div class="flex items-center space-x-2">
+          <h2 class="font-bold text-sm text-amber-300">Tutor: Yonti Testa</h2>
+          <span class="bg-blue-800 text-[10px] px-1.5 py-0.2 rounded text-blue-200">Ex-Anciano IASD</span>
+        </div>
+        <p class="text-slate-300 leading-snug">
+          Dedicado al estudio y la enseñanza de las profecías bíblicas bajo el método historicista y el santuario.
+        </p>
+        <p class="text-amber-200 text-[11px] font-medium pt-1">
+          📖 Actualmente escribiendo: <em>«Más Allá del Amanecer: Vida Renovada»</em> (Beyond Dawn)
+        </p>
+      </div>
+    </section>
+
+    <!-- Selector Desplegable de Lecciones -->
+    <section class="bg-white rounded-lg shadow-sm border border-slate-200 p-3.5 space-y-2">
+      <label for="lesson-selector"
+        class="text-xs font-bold text-slate-700 uppercase tracking-wide flex justify-between items-center">
+        <span>Índice del Curso</span>
+        <span class="text-[11px] text-blue-700 font-medium">Seleccionar Lección</span>
+      </label>
+      <select id="lesson-selector"
+        class="w-full p-2.5 text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        onchange="changeLesson(this.value)">
+        <option value="0">📘 Lección 1: Las Tres Escuelas Proféticas y el Historicismo (Disponible)</option>
+        <option value="1" disabled>🔒 Lección 2: Sola Scriptura, Oración e Investigación (Próximamente)</option>
+        <option value="2" disabled>🔒 Lección 3: El Principio Bíblico de Día por Año (Próximamente)</option>
+        <option value="3" disabled>🔒 Lección 4: De lo Local/Literal a lo Global/Espiritual (Próximamente)</option>
+        <option value="4" disabled>🔒 Lección 5: Cristo y el Santuario como Mapa Profético (Próximamente)</option>
+        <option value="5" disabled>🔒 Lección 6: Tipología Histórica y Simbología Bíblica (Próximamente)</option>
+        <option value="6" disabled>🔒 Lección 7: Daniel 1 - Lealtad en Medio de Babilonia (Próximamente)</option>
+      </select>
+    </section>
+
     <!-- Identificación Opcional para Certificado -->
     <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 text-xs flex items-center justify-between shadow-sm">
       <div class="flex items-center space-x-2 flex-1 mr-2">
         <span class="text-blue-800 font-semibold whitespace-nowrap">Estudiante:</span>
-        <input type="text" id="student-name-input" placeholder="Nombre opcional (para certificado)"
+        <input type="text" id="student-name-input" placeholder="Nombre opcional (para certificado final)"
           class="bg-white border border-blue-300 rounded px-2.5 py-1 text-xs w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
           oninput="updateStudentName(this.value)">
       </div>
@@ -80,7 +121,7 @@
 
       <button id="next-lesson-btn" onclick="nextLesson()"
         class="w-full py-2.5 bg-blue-900 hover:bg-blue-800 text-white text-xs font-bold rounded-md transition shadow hidden">
-        Continuar a la Siguiente Lección →
+        ¡Lección Completada con Éxito!
       </button>
     </section>
 
@@ -88,25 +129,20 @@
     <section id="certificate-view"
       class="bg-white rounded-lg border-2 border-amber-400 p-6 text-center space-y-4 shadow-md hidden">
       <div class="text-amber-500 text-3xl font-bold">★ ★ ★</div>
-      <h2 class="text-xl font-bold text-slate-900">¡Curso Completado con Éxito!</h2>
+      <h2 class="text-xl font-bold text-slate-900">¡Primer Hito Profético Alcanzado!</h2>
       <p class="text-xs text-slate-600 leading-relaxed">
-        Has establecido las bases hermenéuticas de la interpretación profética de <strong>Daniel y Apocalipsis</strong>,
-        reconociendo el principio de <em>Sola Scriptura</em>, el método historicista, el ministerio de Cristo en el
-        Santuario y la fidelidad del remanente en Babilonia.
+        Has fundamentado con éxito las bases hermenéuticas de <strong>Daniel y Apocalipsis</strong>, reconociendo el
+        principio de <em>Sola Scriptura</em> y el método historicista de interpretación profética.
       </p>
       <div class="p-5 border border-dashed border-amber-300 rounded bg-amber-50 text-slate-800 space-y-1">
-        <p class="text-xs uppercase text-slate-500 font-semibold">Certificado conferido a:</p>
+        <p class="text-xs uppercase text-slate-500 font-semibold">Reconocimiento para:</p>
         <p id="cert-student-name" class="text-lg font-bold text-blue-900">[Estudiante de las Profecías]</p>
-        <p class="text-[11px] text-slate-500">Acreditación de Fundamentos Proféticos</p>
+        <p class="text-[11px] text-slate-500">Tutor: Yonti Testa &bull; Curso de Interpretación Profética</p>
       </div>
       <div class="flex gap-2 justify-center pt-2">
         <button onclick="window.print()"
           class="px-4 py-2 bg-slate-800 text-white text-xs rounded font-bold hover:bg-slate-700 transition">
-          Imprimir / Guardar en PDF
-        </button>
-        <button onclick="restartCourse()"
-          class="px-4 py-2 bg-slate-200 text-slate-700 text-xs rounded font-bold hover:bg-slate-300 transition">
-          Repasar Curso
+          Imprimir Acreditación
         </button>
       </div>
     </section>
@@ -114,204 +150,45 @@
   </main>
 
   <script>
+    // Banco de datos: Inicialmente con la Lección 1 activa
     const COURSE_DATA = [
       {
         id: 1,
-        badge: "Fundamentos • Cápsula 1",
-        step: "Lección 1 de 7",
-        title: "Sola Scriptura y la Oración (Principios #2, #3, #4 y #5)",
+        badge: "Fundamentos • Lección 1",
+        step: "Lección Activa (Fase 1)",
+        title: "Las Tres Escuelas Proféticas y la Superioridad del Historicismo",
         content: `
-          <p>La regla de oro de la interpretación profética es que <strong>la Biblia es su propio intérprete</strong> (2 Pedro 1:20-21). El Espíritu Santo inspiró las Escrituras como una unidad orgánica indivisible, colocando dentro del texto las claves para descifrar cada símbolo.</p>
+          <p>Para abordar con precisión la profecía bíblica, es indispensable definir las tres escuelas de interpretación existentes y evaluar su fidelidad al principio de <em>Sola Scriptura</em>:</p>
           
-          <div class="space-y-2 my-2 text-xs">
-            <div class="p-2.5 rounded bg-slate-50 border border-slate-200">
-              <strong>1. Nunca abrir la Biblia sin orar (Principio #2):</strong> Solo el Espíritu Santo puede hacernos entender lo profundo y librarnos de torcer verdades difíciles (2 Pedro 3:16).
+          <div class="space-y-2.5 my-3">
+            <div class="p-3 rounded bg-slate-50 border border-slate-200">
+              <p class="font-bold text-xs text-rose-700">1. Método Preterista (Jesuita Luis de Alcázar, 1554-1613)</p>
+              <p class="text-xs text-slate-600 mt-1">Enseña que casi toda la profecía ya se cumplió en el pasado remoto (con reyes locales como Antíoco Epífanes en Daniel o emperadores como Nerón en Apocalipsis). Niega el carácter predictivo divino y deja a la iglesia actual sin advertencias para el tiempo del fin.</p>
             </div>
-            <div class="p-2.5 rounded bg-slate-50 border border-slate-200">
-              <strong>2. Preguntar y escudriñar (Principio #3):</strong> Como detectives bíblicos, analizamos qué dice el texto, qué no dice y qué palabras clave se repiten.
+
+            <div class="p-3 rounded bg-slate-50 border border-slate-200">
+              <p class="font-bold text-xs text-amber-700">2. Método Futurista (Jesuita Francisco Ribera, 1537-1591)</p>
+              <p class="text-xs text-slate-600 mt-1">Sostiene que casi todo Apocalipsis (caps. 4 al 19) se cumplirá en 7 años literales en el futuro tras un rapto secreto. Coloca una brecha artificial de más de 2000 años dislocando la semana 70 de Daniel 9, apartando la atención del papado como el cuerno pequeño y del sábado bíblico.</p>
             </div>
-            <div class="p-2.5 rounded bg-slate-50 border border-slate-200">
-              <strong>3. Contexto histórico, gramática y léxico (Principio #4):</strong> El trasfondo cultural, el tiempo de los verbos y el idioma original arrojan luz sobre el significado exacto.
+
+            <div class="p-3 rounded bg-blue-50 border border-blue-200">
+              <p class="font-bold text-xs text-blue-900">3. Método Historicista (La Regla Bíblica de Sola Scriptura)</p>
+              <p class="text-xs text-slate-700 mt-1">Enseña que las profecías trazan una <strong>cadena cronológica ininterrumpida</strong> desde la época del profeta hasta el establecimiento del reino eterno de Cristo. Es el método bíblico por excelencia adoptado por los reformadores protestantes.</p>
             </div>
-          </div>
-          <p class="text-xs text-slate-600 bg-amber-50 p-2 border-l-4 border-amber-500"><em>«La Escritura abre la Escritura. Un pasaje es la llave para abrir otros pasajes... Comparando los textos que se refieren a los mismos temas, verá usted una belleza y una armonía que nunca soñó.»</em> (Elena White, Testimonios, t. 4, p. 490).</p>
-        `,
-        quiz: {
-          question: "¿Cómo debe descifrarse un símbolo profético difícil según el principio Sola Scriptura?",
-          options: [
-            {text: "A) Consultando las opiniones de las noticias y la política del momento.", correct: false},
-            {text: "B) Rastreando cómo la misma Biblia define ese símbolo en otros pasajes y libros del canon.", correct: true},
-            {text: "C) Aceptando que cada lector puede darle una interpretación privada y particular.", correct: false}
-          ],
-          explanation: "¡Correcto! La Biblia contiene sus propias llaves; un texto explica a otro texto cuando se comparan pasajes sobre el mismo tema."
-        }
-      },
-      {
-        id: 2,
-        badge: "Fundamentos • Cápsula 2",
-        step: "Lección 2 de 7",
-        title: "Las Tres Escuelas y el Método Historicista (Principio #6)",
-        content: `
-          <p>Existen tres métodos para interpretar las profecías de Daniel y Apocalipsis:</p>
-          
-          <div class="space-y-2 my-2 text-xs">
-            <div class="p-2.5 rounded bg-slate-50 border border-slate-200">
-              <strong class="text-rose-700">Preterismo (Luis de Alcázar, 1554-1613):</strong> Confinó el cumplimiento al pasado remoto (Antíoco Epífanes, Nerón y la caída de Roma). Quita el carácter predictivo divino.
-            </div>
-            <div class="p-2.5 rounded bg-slate-50 border border-slate-200">
-              <strong class="text-amber-700">Futurismo (Francisco Ribera, 1537-1591):</strong> Posterga casi todo Apocalipsis a 7 años literales en el futuro tras un rapto secreto. Coloca un paréntesis de más de 2000 años y oculta la obra del papado y el sábado.
-            </div>
-            <div class="p-2.5 rounded bg-blue-50 border border-blue-200">
-              <strong class="text-blue-900">Historicismo (El Método Bíblico):</strong> Muestra una <strong>cadena histórica continua</strong> desde los días del profeta hasta el reino eterno de Cristo.
-            </div>
-          </div>
-          <p class="text-xs text-slate-700 bg-amber-50 p-2 border-l-4 border-amber-500"><strong>Base Bíblica:</strong> En Daniel 2 y 7 la secuencia de reinos avanza ininterrumpidamente: Babilonia &rarr; Medo-Persia &rarr; Grecia &rarr; Roma &rarr; División en 10 reinos y Cuerno Pequeño &rarr; Juicio y Reino Eterno. La Escritura no contiene saltos cronológicos de siglos.</p>
-        `,
-        quiz: {
-          question: "¿Por qué Daniel 2 y Daniel 7 desmienten tanto al preterismo como al futurismo?",
-          options: [
-            {text: "A) Porque los cuatro metales y bestias se suceden históricamente de forma continua sin vacíos de siglos.", correct: true},
-            {text: "B) Porque el reino de Dios fue establecido enteramente en los días de Nabucodonosor.", correct: false},
-            {text: "C) Porque enseñan que el Anticristo actuará únicamente durante 7 años literales futuros.", correct: false}
-          ],
-          explanation: "¡Exacto! El historicismo sigue el eslabón de la profecía paso a paso desde Babilonia hasta la Segunda Venida sin crear paréntesis imaginarios."
-        }
-      },
-      {
-        id: 3,
-        badge: "Fundamentos • Cápsula 3",
-        step: "Lección 3 de 7",
-        title: "El Reloj Profético: Día por Año (Principio #9)",
-        content: `
-          <p>En el género apocalíptico simbólico, una unidad de tiempo equivale a un año solar literal en el desarrollo de la historia humana.</p>
-          
-          <div class="p-3 rounded bg-slate-50 border border-slate-200 text-xs space-y-1.5 my-2">
-            <p><strong>Evidencia Bíblica:</strong></p>
-            <p>&bull; <em>«Conforme al número de los días... llevaréis vuestras iniquidades cuarenta años, un año por cada día»</em> (Números 14:34).</p>
-            <p>&bull; <em>«Día por año, día por año te lo he dado»</em> (Ezequiel 4:6).</p>
           </div>
 
-          <p class="text-xs text-slate-700">Este principio matemático bíblico permite verificar períodos exactos:</p>
-          <ul class="text-xs list-disc pl-4 space-y-1 text-slate-600">
-            <li><strong>1260 días/años:</strong> De 538 d.C. a 1798 d.C. (la supremacía papal medieval).</li>
-            <li><strong>70 semanas (490 años):</strong> De 457 a.C. a 34 d.C. (cortadas para el pueblo judío hasta el martirio de Esteban).</li>
-            <li><strong>2300 tardes y mañanas (años):</strong> De 457 a.C. a 1844 d.C. (inicio de la purificación del santuario celestial).</li>
-          </ul>
-        `,
-        quiz: {
-          question: "¿Qué ocurre si interpretamos los 1260 días de Daniel y Apocalipsis como días literales de 24 horas?",
-          options: [
-            {text: "A) Coincidiría con la profecía de las 70 semanas de Daniel 9.", correct: false},
-            {text: "B) Se cae en el error del futurismo, reduciendo 1260 años de persecución papal a solo 3.5 años en el futuro.", correct: true},
-            {text: "C) Se comprueba que el santuario terrenal fue purificado en el año 31 d.C.", correct: false}
-          ],
-          explanation: "¡Correcto! Interpretar los períodos simbólicos como días literales destruye el cumplimiento histórico comprobado del cuerno pequeño entre 538 y 1798 d.C."
-        }
-      },
-      {
-        id: 4,
-        badge: "Fundamentos • Cápsula 4",
-        step: "Lección 4 de 7",
-        title: "De lo Local a lo Global y el Israel Espiritual (Principios #8 y #10)",
-        content: `
-          <p>Una regla indispensable para interpretar las profecías del Antiguo Testamento en Apocalipsis es el principio de transición:</p>
-          
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs my-2">
-            <div class="p-2.5 rounded bg-slate-50 border border-slate-200">
-              <strong class="text-slate-800">Antiguo Testamento (Local y Literal):</strong>
-              <p class="mt-1 text-slate-600">&bull; Israel étnico y terrenal.<br>&bull; Fronteras geográficas de Canaán.<br>&bull; Enemigos físicos: Babilonia, Egipto, el río Éufrates literal.</p>
-            </div>
-            <div class="p-2.5 rounded bg-blue-50 border border-blue-200">
-              <strong class="text-blue-900">Nuevo Testamento (Espiritual y Global):</strong>
-              <p class="mt-1 text-slate-700">&bull; Israel son todos los que están en Cristo (Gál. 3:29).<br>&bull; Babilonia es la apostasía religiosa mundial unida al poder político.<br>&bull; El Éufrates son pueblos y muchedumbres (Apoc. 17:15).</p>
-            </div>
-          </div>
-          <p class="text-xs text-slate-600">El dispensacionalismo moderno comete el error de devolver el reloj profético a Jerusalén física, olvidando que tras la cruz, la ciudadanía del creyente es celestial.</p>
-        `,
-        quiz: {
-          question: "Según Gálatas 3:29 y Apocalipsis, ¿quién constituye hoy el verdadero Israel de Dios?",
-          options: [
-            {text: "A) La nación geopolítica de Israel en el Medio Oriente.", correct: false},
-            {text: "B) Todos los creyentes de toda nación que pertenecen a Cristo por la fe.", correct: true},
-            {text: "C) Únicamente los descendientes consanguíneos de Abraham que viven en Jerusalén.", correct: false}
-          ],
-          explanation: "¡Muy bien! «Y si vosotros sois de Cristo, ciertamente linaje de Abraham sois, y herederos según la promesa» (Gálatas 3:29)."
-        }
-      },
-      {
-        id: 5,
-        badge: "Fundamentos • Cápsula 5",
-        step: "Lección 5 de 7",
-        title: "Cristo y el Santuario: La Brújula de Apocalipsis (Principios #7 y #13)",
-        content: `
-          <p>Apocalipsis no es una galería de catástrofes, sino la <strong>«revelación de Jesucristo»</strong> (Apoc. 1:1). La totalidad del libro se estructura siguiendo los departamentos del Santuario celestial:</p>
-
-          <div class="p-3 rounded bg-slate-50 border border-slate-200 text-xs space-y-1.5 my-2">
-            <p><strong>1. El Atrio Terrenal:</strong> Cristo vive una vida santa y muere en la cruz como Cordero inmolado en el año 31 d.C., resucitando al tercer día (1 Cor. 5:7; 15:20).</p>
-            <p><strong>2. El Lugar Santo (Apoc. 1-11:18):</strong> Tras el Pentecostés, Jesús es inaugurado Sumo Sacerdote e intercede ante los candeleros (iglesias) y el altar del incienso (trompetas).</p>
-            <p><strong>3. El Lugar Santísimo (Apoc. 11:19 a 22):</strong> En 1844 se abre el templo y queda visible el Arca del Testamento con los diez mandamientos. Comienza el Juicio Investigador y el sellamiento.</p>
-            <p><strong>4. Cierre de la Gracia (Apoc. 15:5-8):</strong> Cesa la intercesión, el templo se llena de humo y caen las plagas finales.</p>
+          <div class="p-3 rounded bg-amber-50 border-l-4 border-amber-500 text-xs text-slate-700">
+            <strong>Soporte Bíblico Exclusivo:</strong> En <strong>Daniel 2</strong> y <strong>Daniel 7</strong> Dios revela una secuencia anatómica y cronológica continua: Babilonia &rarr; Medo-Persia &rarr; Grecia &rarr; Roma &rarr; División en 10 reinos y surgimiento del Cuerno Pequeño &rarr; Juicio y Reino Eterno. La Biblia jamás coloca paréntesis de siglos en sus cadenas proféticas.
           </div>
         `,
         quiz: {
-          question: "En Apocalipsis 11:19, ¿qué evento y lugar del santuario se revelan al profeta Juan?",
+          question: "¿Por qué el método historicista es bíblicamente superior frente al preterismo y al futurismo?",
           options: [
-            {text: "A) El atrio terrenal con el altar del sacrificio en el Gólgota.", correct: false},
-            {text: "B) El Lugar Santísimo celestial abierto en 1844, donde se contempla el Arca del Pacto con su Santa Ley.", correct: true},
-            {text: "C) La reconstrucción física del templo judío de Salomón.", correct: false}
+            {text: "A) Porque las cadenas de Daniel 2, 7 y Apocalipsis 12 avanzan de forma continua sin vacíos artificiales de miles de años.", correct: true},
+            {text: "B) Porque enseña que el cumplimiento de las profecías terminó definitivamente en el siglo I.", correct: false},
+            {text: "C) Porque aplica la semana 70 a un gobernante malévolo en el Medio Oriente tras un rapto secreto.", correct: false}
           ],
-          explanation: "¡Exacto! Apocalipsis 11:19 marca el traslado de Jesús al Lugar Santísimo celestial para consumar la purificación del santuario."
-        }
-      },
-      {
-        id: 6,
-        badge: "Fundamentos • Cápsula 6",
-        step: "Lección 6 de 7",
-        title: "Tipología y Símbolos Bíblicos (Principios #1, #11, #12, #14 y #15)",
-        content: `
-          <p>Las historias históricas de Daniel no son meros recuerdos del pasado; son <strong>tipos proféticos</strong> que anuncian eventos a escala global en los últimos días:</p>
-
-          <ul class="text-xs list-disc pl-4 space-y-1 text-slate-600 my-2">
-            <li><strong>Daniel 3 (Valle de Dura):</strong> Un poder político decreta la adoración forzada a una imagen so pena de muerte. Tipifica la crisis de Apocalipsis 13 sobre la imagen y la marca de la bestia.</li>
-            <li><strong>Daniel 6 (Foso de los Leones):</strong> El estado prohíbe la libre práctica religiosa y la oración a Dios.</li>
-            <li><strong>La Trilogía de Elías:</strong> Acab (poder civil), Jezabel (iglesia apóstata) y falsos profetas equivalen al Dragón, la Bestia y el Falso Profeta en Apocalipsis.</li>
-          </ul>
-          <p class="text-xs text-slate-700 bg-amber-50 p-2 border-l-4 border-amber-500"><em>«En el Apocalipsis todos los libros de la Biblia se encuentran y terminan. En él está el complemento del libro de Daniel. El libro que fue sellado era la porción de Daniel relativa a los últimos días.»</em> (Elena White, Hechos de los Apóstoles, p. 467).</p>
-        `,
-        quiz: {
-          question: "¿Qué lección tipológica esencial nos enseña Daniel 3 respecto a la crisis final de Apocalipsis 13?",
-          options: [
-            {text: "A) Que el conflicto final no será sobre territorios, sino sobre la adoración y la lealtad a la Ley de Dios frente a decretos humanos.", correct: true},
-            {text: "B) Que todos los creyentes serán arrebatados al cielo antes de enfrentar la tribulación.", correct: false},
-            {text: "C) Que el rey Nabucodonosor representaba exclusivamente al imperio de Grecia.", correct: false}
-          ],
-          explanation: "¡Correcto! En Daniel 3 el punto de contención fue adorar la imagen o permanecer leal al segundo mandamiento; en Apocalipsis 13 se repite la misma prueba moral."
-        }
-      },
-      {
-        id: 7,
-        badge: "Daniel • Capítulo 1",
-        step: "Lección 7 de 7",
-        title: "La Prueba de la Lealtad en Medio de Babilonia",
-        content: `
-          <p>Daniel capítulo 1 establece el fundamento moral de todo el libro. Daniel y sus compañeros fueron transportados al centro mismo del paganismo imperial:</p>
-
-          <div class="p-3 rounded bg-slate-50 border border-slate-200 text-xs space-y-1.5 my-2">
-            <p><strong>1. La estrategia de Babilonia:</strong> Cambiar sus nombres para honrar a los dioses paganos, reeducar sus mentes en la cultura caldea y asimilar sus vidas mediante la comida y el vino de la mesa del rey (Daniel 1:5-7).</p>
-            <p><strong>2. La resolución inquebrantable:</strong> <em>«Y Daniel propuso en su corazón no contaminarse con la porción de la comida del rey, ni con el vino que él bebía»</em> (Daniel 1:8).</p>
-            <p><strong>3. La bendición divina:</strong> Al cabo de los diez días de prueba comiendo legumbres y bebiendo agua, estaban más sanos y lúcidos. Dios les concedió sabiduría diez veces superior a la de todos los magos de Babilonia (Daniel 1:17-20).</p>
-          </div>
-
-          <p class="text-xs text-slate-700 bg-amber-50 p-2 border-l-4 border-amber-500"><strong>Aplicación para el Tiempo del Fin:</strong> El remanente que viva en medio de la Babilonia escatológica debe vencer primero en las pruebas del apetito y la consagración diaria para poder sostenerse firme cuando llegue el decreto de muerte de Daniel 3 y Apocalipsis 13.</p>
-        `,
-        quiz: {
-          question: "¿Por qué Daniel propuso en su corazón no contaminarse con la comida y el vino del rey de Babilonia?",
-          options: [
-            {text: "A) Porque los manjares y el vino estaban vinculados a sacrificios paganos y violaban las leyes de salud de Dios.", correct: true},
-            {text: "B) Porque la comida babilónica era escasa y de mala calidad.", correct: false},
-            {text: "C) Porque deseaba demostrar su superioridad física ante los eunucos reales.", correct: false}
-          ],
-          explanation: "¡Exacto! Daniel decidió no transigir con los principios morales y espirituales de Dios, demostrando que la fidelidad en lo pequeño prepara para la prueba mayor."
+          explanation: "¡Correcto! En Daniel 2 y 7 no hay interrupciones: los metales y las bestias se suceden históricamente hasta el reino eterno de Dios."
         }
       }
     ];
@@ -366,6 +243,14 @@
         status.classList.remove("hidden");
         setTimeout(() => status.classList.add("hidden"), 1500);
       }, 500);
+    }
+
+    function changeLesson(val) {
+      const index = parseInt(val, 10);
+      if (index < COURSE_DATA.length) {
+        state.current_lesson = index;
+        renderCurrentLesson();
+      }
     }
 
     function renderCurrentLesson() {
@@ -427,7 +312,7 @@
       } else {
         selectedBtn.classList.add("bg-rose-100", "border-rose-500", "text-rose-900");
         feedback.className = "p-3 rounded-md text-xs font-medium bg-rose-50 text-rose-800 border border-rose-200 block";
-        feedback.innerText = "Respuesta incorrecta. Revisa con cuidado el texto de la lección e inténtalo de nuevo.";
+        feedback.innerText = "Respuesta incorrecta. Revisa el texto y los argumentos bíblicos de la lección e inténtalo de nuevo.";
 
         setTimeout(() => {
           allBtns.forEach(btn => btn.disabled = false);
@@ -438,14 +323,11 @@
     }
 
     function nextLesson() {
-      state.current_lesson++;
-      saveState();
-      renderCurrentLesson();
-      window.scrollTo({top: 0, behavior: 'smooth'});
+      showCertificate();
     }
 
     function updateProgressUI() {
-      const total = COURSE_DATA.length;
+      const total = 7; // Total de lecciones proyectadas
       const count = state.completed.length;
       const percent = Math.round((count / total) * 100);
 
