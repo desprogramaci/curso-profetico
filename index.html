@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curso Bíblico: Daniel y Apocalipsis</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col items-center">
+
+  <!-- Header Superior -->
+  <header class="w-full max-w-xl bg-blue-900 text-white p-4 shadow-md sticky top-0 z-20 flex justify-between items-center">
+    <div>
+      <h1 class="text-base font-bold sm:text-lg">Daniel y Apocalipsis</h1>
+      <p class="text-xs text-blue-200">Plataforma de Interpretación Profética</p>
+    </div>
+    <div class="text-right">
+      <span class="text-[10px] font-bold uppercase tracking-wider text-amber-300">Progreso</span>
+      <p id="progress-percent" class="text-sm font-bold">0%</p>
+    </div>
+  </header>
+
+  <!-- Contenedor Principal (Mobile-First) -->
+  <main class="w-full max-w-xl p-4 space-y-4 flex-1">
+
+    <!-- Barra de Progreso Global -->
+    <div class="w-full bg-slate-200 rounded-full h-2">
+      <div id="progress-bar" class="bg-amber-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+    </div>
+
+    <!-- Identificación Opcional para Certificado -->
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 text-xs flex items-center justify-between shadow-sm">
+      <div class="flex items-center space-x-2 flex-1 mr-2">
+        <span class="text-blue-800 font-semibold whitespace-nowrap">Estudiante:</span>
+        <input type="text" id="student-name-input" placeholder="Nombre opcional (para certificado)" 
+               class="bg-white border border-blue-300 rounded px-2.5 py-1 text-xs w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
+               oninput="updateStudentName(this.value)">
+      </div>
+      <span id="name-saved-indicator" class="text-emerald-600 font-bold hidden">✓ Guardado</span>
+    </div>
+
+    <!-- Contenido de la Lección Actual -->
+    <section class="bg-white rounded-lg shadow-sm border border-slate-200 p-5 space-y-4">
+      <div class="flex justify-between items-center border-b border-slate-100 pb-2">
+        <span id="lesson-badge" class="bg-blue-100 text-blue-800 text-[11px] font-semibold px-2.5 py-0.5 rounded"></span>
+        <span id="module-step" class="text-xs text-slate-400 font-medium"></span>
+      </div>
+      
+      <h2 id="lesson-title" class="text-lg font-bold text-slate-900 leading-tight"></h2>
+      
+      <div id="lesson-body" class="text-sm text-slate-600 leading-relaxed space-y-3"></div>
+    </section>
+
+    <!-- Apuntes Personales por Lección -->
+    <section class="bg-white rounded-lg shadow-sm border border-slate-200 p-4 space-y-2">
+      <div class="flex justify-between items-center">
+        <label for="user-notes" class="text-xs font-bold text-slate-700 uppercase tracking-wide">Tus Apuntes Personales</label>
+        <span id="notes-status" class="text-[11px] text-emerald-600 font-medium hidden">Guardado automático ✓</span>
+      </div>
+      <textarea id="user-notes" rows="3" 
+                class="w-full p-2.5 text-xs sm:text-sm border rounded-md border-slate-300 focus:ring-2 focus:ring-blue-500 focus:outline-none" 
+                placeholder="Escribe aquí tus reflexiones bíblicas y apuntes personales..."
+                oninput="autoSaveNote()"></textarea>
+    </section>
+
+    <!-- Test de Evaluación -->
+    <section id="quiz-container" class="bg-white rounded-lg shadow-sm border border-slate-200 p-5 space-y-4">
+      <div class="border-b border-slate-100 pb-2">
+        <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wide">Comprueba tu Aprendizaje</h3>
+        <p id="quiz-question" class="text-sm font-semibold text-slate-800 mt-2"></p>
+      </div>
+
+      <div id="quiz-options" class="space-y-2"></div>
+
+      <div id="quiz-feedback" class="hidden p-3 rounded-md text-xs font-medium"></div>
+
+      <button id="next-lesson-btn" onclick="nextLesson()" 
+              class="w-full py-2.5 bg-blue-900 hover:bg-blue-800 text-white text-xs font-bold rounded-md transition shadow hidden">
+        Continuar a la Siguiente Lección →
+      </button>
+    </section>
+
+    <!-- Vista de Certificado Final -->
+    <section id="certificate-view" class="bg-white rounded-lg border-2 border-amber-400 p-6 text-center space-y-4 shadow-md hidden">
+      <div class="text-amber-500 text-3xl font-bold">★ ★ ★</div>
+      <h2 class="text-xl font-bold text-slate-900">¡Curso Completado con Éxito!</h2>
+      <p class="text-xs text-slate-600 leading-relaxed">
+        Has establecido las bases hermenéuticas de la interpretación profética de <strong>Daniel y Apocalipsis</strong>, reconociendo el principio de <em>Sola Scriptura</em>, el método historicista y la centralidad de Cristo en el Santuario.
+      </p>
+      <div class="p-5 border border-dashed border-amber-300 rounded bg-amber-50 text-slate-800 space-y-1">
+        <p class="text-xs uppercase text-slate-500 font-semibold">Certificado conferido a:</p>
+        <p id="cert-student-name" class="text-lg font-bold text-blue-900">[Estudiante de las Profecías]</p>
+        <p class="text-[11px] text-slate-500">Acreditación de Estudio Profético Personal</p>
+      </div>
+      <div class="flex gap-2 justify-center pt-2">
+        <button onclick="window.print()" class="px-4 py-2 bg-slate-800 text-white text-xs rounded font-bold hover:bg-slate-700 transition">
+          Imprimir / Descargar PDF
+        </button>
+        <button onclick="restartCourse()" class="px-4 py-2 bg-slate-200 text-slate-700 text-xs rounded font-bold hover:bg-slate-300 transition">
+          Repasar Curso
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // 1. Banco de Contenidos y Evaluaciones con Soporte Sola Scriptura
+    const COURSE_DATA = [
+      {
+        id: 1,
+        badge: "Módulo 1 • Hermenéutica Fundamental",
+        step: "Lección 1 de 4",
+        title: "Las Tres Escuelas Proféticas y la Superioridad del Historicismo",
+        content: `
+          <p>Para abordar con precisión la profecía bíblica, es indispensable definir las tres escuelas de interpretación existentes y evaluar su fidelidad al principio de <em>Sola Scriptura</em>:</p>
+          
+          <div class="space-y-2.5 my-3">
+            <div class="p-3 rounded bg-slate-50 border border-slate-200">
+              <p class="font-bold text-xs text-rose-700">1. Método Preterista (Jesuita Luis de Alcázar, 1554-1613)</p>
+              <p class="text-xs text-slate-600 mt-1">Enseña que casi toda la profecía ya se cumplió en el pasado remoto (con reyes locales como Antíoco Epífanes en Daniel o emperadores como Nerón en Apocalipsis). Niega el carácter predictivo divino y deja a la iglesia actual sin advertencias para el tiempo del fin.</p>
+            </div>
+
+            <div class="p-3 rounded bg-slate-50 border border-slate-200">
+              <p class="font-bold text-xs text-amber-700">2. Método Futurista (Jesuita Francisco Ribera, 1537-1591)</p>
+              <p class="text-xs text-slate-600 mt-1">Sostiene que casi todo Apocalipsis (caps. 4 al 19) se cumplirá en 7 años literales en el futuro tras un rapto secreto. Coloca una brecha artificial de más de 2000 años dislocando la semana 70 de Daniel 9, apartando la atención del papado como el cuerno pequeño y del sábado bíblico.</p>
+            </div>
+
+            <div class="p-3 rounded bg-blue-50 border border-blue-200">
+              <p class="font-bold text-xs text-blue-900">3. Método Historicista (La Regla Bíblica de Sola Scriptura)</p>
+              <p class="text-xs text-slate-700 mt-1">Enseña que las profecías trazan una <strong>cadena cronológica ininterrumpida</strong> desde la época del profeta hasta el establecimiento del reino eterno de Cristo. Es el método bíblico por excelencia adoptado por los reformadores protestantes.</p>
+            </div>
+          </div>
+
+          <div class="p-3 rounded bg-amber-50 border-l-4 border-amber-500 text-xs text-slate-700">
+            <strong>Soporte Bíblico Exclusivo:</strong> En <strong>Daniel 2</strong> y <strong>Daniel 7</strong> Dios revela una secuencia anatómica y cronológica continua: Babilonia &rarr; Medo-Persia &rarr; Grecia &rarr; Roma &rarr; División en 10 reinos y surgimiento del Cuerno Pequeño &rarr; Juicio y Reino Eterno. La Biblia jamás coloca paréntesis de siglos en sus cadenas proféticas.
+          </div>
+        `,
+        quiz: {
+          question: "¿Por qué el método historicista es bíblicamente superior frente al preterismo y al futurismo?",
+          options: [
+            { text: "A) Porque las cadenas de Daniel 2, 7 y Apocalipsis 12 avanzan de forma continua sin vacíos artificiales de miles de años.", correct: true },
+            { text: "B) Porque enseña que el cumplimiento de las profecías terminó definitivamente en el siglo I.", correct: false },
+            { text: "C) Porque aplica la semana 70 a un gobernante malévolo en el Medio Oriente tras un rapto secreto.", correct: false }
+          ],
+          explanation: "¡Correcto! En Daniel 2 y 7 no hay interrupciones: los metales y las bestias se suceden históricamente hasta el reino eterno de Dios."
+        }
+      },
+      {
+        id: 2,
+        badge: "Módulo 2 • Cronología Bíblica",
+        step: "Lección 2 de 4",
+        title: "Las 70 Semanas y la Purificación del Santuario (1844)",
+        content: `
+          <p>Daniel 8 presenta la gran profecía de las <strong>2300 tardes y mañanas</strong> (años) para la purificación del santuario celestial. Cuando Daniel enfermó sin entenderla, el ángel Gabriel regresó en Daniel 9 para darle la clave de inicio.</p>
+          
+          <div class="p-3 rounded bg-slate-50 border border-slate-200 text-xs space-y-2 my-2">
+            <p><strong>1. Punto de partida:</strong> El decreto de Artajerjes I para reedificar Jerusalén en el otoño del <strong>457 a.C.</strong> (Esdras 7).</p>
+            <p><strong>2. Las 70 semanas (490 años):</strong> Fueron «cortadas» de los 2300 días para el pueblo judío (Daniel 9:24), alcanzando el bautismo de Jesús (27 d.C.), su crucifixión a la mitad de la semana haciendo cesar los sacrificios (31 d.C.) y el martirio de Esteban (34 d.C.).</p>
+            <p><strong>3. El remanente de 1810 años:</strong> Al sumar los 1810 años restantes desde el 34 d.C., la profecía llega con exactitud matemática a <strong>1844 d.C.</strong></p>
+          </div>
+
+          <p class="text-xs text-slate-600">En 1844 Jesús inició la última fase de su ministerio sacerdotal en el Lugar Santísimo: el Juicio Investigador y la purificación del santuario prometida en Daniel 8:14.</p>
+        `,
+        quiz: {
+          question: "¿Qué evento fundamental ocurrió en el otoño de 1844 al cumplirse los 2300 días-años de Daniel 8:14?",
+          options: [
+            { text: "A) La Segunda Venida visible de Cristo a la tierra.", correct: false },
+            { text: "B) El traslado de Cristo al Lugar Santísimo celestial para el Juicio Investigador.", correct: true },
+            { text: "C) La reedificación de los muros de Jerusalén por Nehemías.", correct: false }
+          ],
+          explanation: "¡Exacto! Cristo pasó del Lugar Santo al Lugar Santísimo para iniciar el juicio de los que profesaron su nombre (Apoc. 11:19)."
+        }
+      },
+      {
+        id: 3,
+        badge: "Módulo 3 • El Santuario y Apocalipsis",
+        step: "Lección 3 de 4",
+        title: "El Santuario: La Brújula Estructural de Apocalipsis",
+        content: `
+          <p>La totalidad de Apocalipsis está organizada en torno a las funciones y traslados de Jesús en los servicios del Santuario:</p>
+
+          <ul class="text-xs space-y-2 list-disc pl-4 my-2">
+            <li><strong>El Atrio (la Tierra):</strong> Cristo ofrece el sacrificio perfecto en la cruz (año 31 d.C., 1 Cor. 5:7) y resucita al tercer día como primicia (Lavacro).</li>
+            <li><strong>El Lugar Santo (Apoc. 1-11:18):</strong> Tras su ascensión y el Pentecostés, Jesús oficia entre los candeleros (las 7 iglesias) y ante el altar de incienso (las 7 trompetas).</li>
+            <li><strong>El Lugar Santísimo (Apoc. 11:19-22):</strong> Se abre el templo en el cielo y se ve el Arca del Testamento con la Ley de Dios inmutable. Cristo juzga y sella a su pueblo.</li>
+            <li><strong>Cierre de la Gracia (Apoc. 15:5-8):</strong> El templo se llena de humo, concluye la intercesión y caen las 7 plagas postreras previas a la venida de Cristo.</li>
+          </ul>
+        `,
+        quiz: {
+          question: "En Apocalipsis 11:19, ¿qué mueble sagrado queda a la vista al abrirse el templo en el cielo?",
+          options: [
+            { text: "A) El altar de bronce del sacrificio.", correct: false },
+            { text: "B) El candelero de siete brazos.", correct: false },
+            { text: "C) El arca de su pacto (que contiene los diez mandamientos).", correct: true }
+          ],
+          explanation: "¡Correcto! El arca del pacto está en el Lugar Santísimo, atrayendo la atención del mundo hacia la ley de Dios y el sábado."
+        }
+      },
+      {
+        id: 4,
+        badge: "Módulo 4 • La Crisis Final",
+        step: "Lección 4 de 4",
+        title: "Apocalipsis 10, la Trilogía Apóstata y el Conflicto Final",
+        content: `
+          <p>Apocalipsis 10 profetizó el origen del pueblo remanente: tras el Gran Chasco de 1844 (el librito dulce en la boca y amargo en el vientre), se proclama el mandato: <em>«Es necesario que profetices otra vez»</em> y midas a los adoradores en el templo celestial.</p>
+          <p>El conflicto final repite la historia de Elías en una escala global:</p>
+          <ul class="text-xs space-y-1.5 list-disc pl-4 my-2">
+            <li><strong>El Dragón:</strong> Los poderes políticos de la tierra instigados por Satanás.</li>
+            <li><strong>La Bestia del mar:</strong> Roma papal (la Jezabel espiritual que fornica con el poder civil).</li>
+            <li><strong>El Falso Profeta:</strong> El protestantismo apóstata en EE.UU. que hace descender fuego y promueve una ley dominical.</li>
+            <li><strong>El Remanente Fiel:</strong> Los que guardan los mandamientos de Dios y tienen la fe de Jesús (Apoc. 14:12).</li>
+          </ul>
+        `,
+        quiz: {
+          question: "¿Cuáles son los puntos medulares del conflicto entre el Remanente y la Trilogía Satánica en Apocalipsis?",
+          options: [
+            { text: "A) Conflictos políticos territoriales por el control del petróleo.", correct: false },
+            { text: "B) La ley de Dios, el sábado como sello del Creador y la verdadera adoración.", correct: true },
+            { text: "C) Guerras convencionales entre naciones del hemisferio oriental.", correct: false }
+          ],
+          explanation: "¡Excelente! Al igual que en el monte Carmelo y en el valle de Dura, el asunto central es: ¿a quién adorarás y qué ley obedecerás?"
+        }
+      }
+    ];
+
+    // 2. Gestión de Estado Local (Cero Fricción con LocalStorage)
+    let state = {
+      student_id: null,
+      full_name: "",
+      current_lesson: 0,
+      notes: {},
+      completed: []
+    };
+
+    let saveTimeout = null;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadState();
+      renderCurrentLesson();
+    });
+
+    function loadState() {
+      const stored = localStorage.getItem("curso_profetico_state");
+      if (stored) {
+        state = JSON.parse(stored);
+      } else {
+        state.student_id = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : 'std_' + Date.now();
+        saveState();
+      }
+      if (state.full_name) {
+        document.getElementById("student-name-input").value = state.full_name;
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem("curso_profetico_state", JSON.stringify(state));
+    }
+
+    function updateStudentName(name) {
+      state.full_name = name.trim();
+      saveState();
+      const ind = document.getElementById("name-saved-indicator");
+      ind.classList.remove("hidden");
+      setTimeout(() => ind.classList.add("hidden"), 1500);
+    }
+
+    function autoSaveNote() {
+      clearTimeout(saveTimeout);
+      saveTimeout = setTimeout(() => {
+        const text = document.getElementById("user-notes").value;
+        state.notes[`lesson_${state.current_lesson}`] = text;
+        saveState();
+        const status = document.getElementById("notes-status");
+        status.classList.remove("hidden");
+        setTimeout(() => status.classList.add("hidden"), 1500);
+      }, 500);
+    }
+
+    // 3. Renderizado de Lecciones y Cuestionarios
+    function renderCurrentLesson() {
+      if (state.current_lesson >= COURSE_DATA.length) {
+        showCertificate();
+        return;
+      }
+
+      const lesson = COURSE_DATA[state.current_lesson];
+      
+      document.getElementById("lesson-badge").innerText = lesson.badge;
+      document.getElementById("module-step").innerText = lesson.step;
+      document.getElementById("lesson-title").innerText = lesson.title;
+      document.getElementById("lesson-body").innerHTML = lesson.content;
+
+      document.getElementById("user-notes").value = state.notes[`lesson_${state.current_lesson}`] || "";
+
+      document.getElementById("quiz-question").innerText = lesson.quiz.question;
+      const optionsContainer = document.getElementById("quiz-options");
+      optionsContainer.innerHTML = "";
+      
+      const feedback = document.getElementById("quiz-feedback");
+      feedback.className = "hidden";
+      feedback.innerText = "";
+
+      const nextBtn = document.getElementById("next-lesson-btn");
+      nextBtn.classList.add("hidden");
+
+      lesson.quiz.options.forEach((opt) => {
+        const btn = document.createElement("button");
+        btn.className = "quiz-btn w-full text-left p-3 text-xs sm:text-sm border rounded-md border-slate-200 hover:bg-slate-50 transition leading-snug";
+        btn.innerText = opt.text;
+        btn.onclick = () => evaluateAnswer(btn, opt.correct, lesson.quiz.explanation);
+        optionsContainer.appendChild(btn);
+      });
+
+      updateProgressUI();
+    }
+
+    function evaluateAnswer(selectedBtn, isCorrect, explanation) {
+      const allBtns = document.querySelectorAll(".quiz-btn");
+      const feedback = document.getElementById("quiz-feedback");
+      const nextBtn = document.getElementById("next-lesson-btn");
+
+      allBtns.forEach(btn => btn.disabled = true);
+
+      if (isCorrect) {
+        selectedBtn.classList.add("bg-emerald-100", "border-emerald-500", "text-emerald-900", "font-medium");
+        feedback.className = "p-3 rounded-md text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200 block";
+        feedback.innerText = explanation;
+
+        if (!state.completed.includes(state.current_lesson)) {
+          state.completed.push(state.current_lesson);
+          saveState();
+        }
+
+        nextBtn.classList.remove("hidden");
+        updateProgressUI();
+      } else {
+        selectedBtn.classList.add("bg-rose-100", "border-rose-500", "text-rose-900");
+        feedback.className = "p-3 rounded-md text-xs font-medium bg-rose-50 text-rose-800 border border-rose-200 block";
+        feedback.innerText = "Respuesta incorrecta. Revisa el texto y las citas de la lección e inténtalo de nuevo.";
+        
+        setTimeout(() => {
+          allBtns.forEach(btn => btn.disabled = false);
+          selectedBtn.classList.remove("bg-rose-100", "border-rose-500", "text-rose-900");
+          feedback.className = "hidden";
+        }, 2200);
+      }
+    }
+
+    function nextLesson() {
+      state.current_lesson++;
+      saveState();
+      renderCurrentLesson();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateProgressUI() {
+      const total = COURSE_DATA.length;
+      const count = state.completed.length;
+      const percent = Math.round((count / total) * 100);
+
+      document.getElementById("progress-bar").style.width = `${percent}%`;
+      document.getElementById("progress-percent").innerText = `${percent}%`;
+    }
+
+    function showCertificate() {
+      document.getElementById("lesson-badge").parentElement.parentElement.classList.add("hidden");
+      document.getElementById("user-notes").parentElement.classList.add("hidden");
+      document.getElementById("quiz-container").classList.add("hidden");
+      
+      const cert = document.getElementById("certificate-view");
+      cert.classList.remove("hidden");
+
+      document.getElementById("cert-student-name").innerText = state.full_name || "Estudiante de las Profecías";
+      document.getElementById("progress-bar").style.width = "100%";
+      document.getElementById("progress-percent").innerText = "100%";
+    }
+
+    function restartCourse() {
+      state.current_lesson = 0;
+      saveState();
+      location.reload();
+    }
+  </script>
+</body>
+</html>
